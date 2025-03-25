@@ -1,26 +1,41 @@
 package main
 
 import (
-	"fmt"
 	"log"
+	"os"
 
 	"github.com/j-tws/go-aggregator/internal/config"
 )
 
+type state struct {
+	cfg *config.Config
+}
+
 func main(){
-	c, err := config.Read()
+	cfg, err := config.Read()
 	if err != nil {
 		log.Fatalf("Error reading config: %v", err)
 	}
 
-	fmt.Printf("Read config: %+v\n", c)
+	programState := state{cfg: &cfg}
 
-	err = c.SetUser("dovahkiin")
-
-	c, err = config.Read()
-
-	if err != nil {
-		log.Fatalf("error reading config: %v", err)
+	commands := commands{
+		list: make(map[string]func(*state, cmd) error),
 	}
-	fmt.Printf("Read config again: %+v\n", c)
+
+	commands.register("login", HandlerLogin)
+
+	programArgs := os.Args
+
+	if len(programArgs) < 2 {
+		log.Fatal("Error: Command name is required")
+	}
+
+	commandName := programArgs[1]
+	commandArgs := programArgs[2:]
+
+	cmdErr := commands.run(&programState, cmd{name: commandName, args: commandArgs}) 
+	if cmdErr != nil {
+		log.Fatal(cmdErr)
+	}
 }
