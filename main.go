@@ -41,6 +41,7 @@ func main(){
 
 	commands.register("login", HandlerLogin)
 	commands.register("register", HandlerRegister)
+	commands.register("reset", HandlerReset)
 
 	programArgs := os.Args
 
