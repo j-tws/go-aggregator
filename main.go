@@ -1,13 +1,17 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"os"
 
 	"github.com/j-tws/go-aggregator/internal/config"
+	"github.com/j-tws/go-aggregator/internal/database"
+	_ "github.com/lib/pq"
 )
 
 type state struct {
+	db  *database.Queries
 	cfg *config.Config
 }
 
@@ -17,13 +21,26 @@ func main(){
 		log.Fatalf("Error reading config: %v", err)
 	}
 
-	programState := state{cfg: &cfg}
+	db, err := sql.Open("postgres", cfg.DbUrl)
+	if err != nil {
+		log.Fatalf("Error connecting to database: %v", err)
+	}
+
+	defer db.Close()
+
+	dbQueries := database.New(db)
+
+	programState := state{
+		cfg: &cfg,
+		db: dbQueries,
+	}
 
 	commands := commands{
 		list: make(map[string]func(*state, cmd) error),
 	}
 
 	commands.register("login", HandlerLogin)
+	commands.register("register", HandlerRegister)
 
 	programArgs := os.Args
 
