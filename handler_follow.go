@@ -9,7 +9,7 @@ import (
 	"github.com/j-tws/go-aggregator/internal/database"
 )
 
-func HandlerFollow(s *state, cmd cmd) error {
+func HandlerFollow(s *state, cmd cmd, user database.User) error {
 	if len(cmd.args) != 1 {
 		return fmt.Errorf("Usage: go run . follow <url>")
 	}
@@ -20,17 +20,12 @@ func HandlerFollow(s *state, cmd cmd) error {
 	if err != nil {
 		return fmt.Errorf("Error finding feed with url '%s': %w", url, err)
 	}
-	
-	currentUser, err := s.db.GetUser(context.Background(), s.cfg.CurrentUserName)
-	if err != nil {
-		return fmt.Errorf("Error finding username '%s': %w", s.cfg.CurrentUserName, err)
-	}
 
 	createFeedFollowParams := database.CreateFeedFollowParams{
 		ID: uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
-		UserID: currentUser.ID,
+		UserID: user.ID,
 		FeedID: feed.ID,
 	}
 

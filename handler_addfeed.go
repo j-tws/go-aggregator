@@ -9,7 +9,7 @@ import (
 	"github.com/j-tws/go-aggregator/internal/database"
 )
 
-func HandlerAddFeed(s *state, cmd cmd) error {
+func HandlerAddFeed(s *state, cmd cmd, user database.User) error {
 	if len(cmd.args) < 2 {
 		return fmt.Errorf("URL and name of feed is required")
 	}
@@ -17,18 +17,13 @@ func HandlerAddFeed(s *state, cmd cmd) error {
 	feedName := cmd.args[0]
 	feedUrl := cmd.args[1]
 
-	currentUser, err := s.db.GetUser(context.Background(), s.cfg.CurrentUserName)
-	if err != nil {
-		return fmt.Errorf("Error finding current user: %w", err)
-	}
-
 	params := database.CreateFeedParams{
 		ID: uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
 		Name: feedName,
 		Url: feedUrl,
-		UserID: currentUser.ID,
+		UserID: user.ID,
 	}
 
 	feed, err := s.db.CreateFeed(context.Background(), params)
@@ -44,7 +39,7 @@ func HandlerAddFeed(s *state, cmd cmd) error {
 		ID: uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
-		UserID: currentUser.ID,
+		UserID: user.ID,
 		FeedID: feed.ID,
 	}
 
