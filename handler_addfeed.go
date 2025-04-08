@@ -49,8 +49,8 @@ func HandlerAddFeed(s *state, cmd cmd, user database.User) error {
 	}
 
 	fmt.Println("Successfully created feed follow!")
-	fmt.Printf("Feed name: %s", createFeedFollowRow.FeedName)
-	fmt.Printf("User name: %s", createFeedFollowRow.UserName)
+	fmt.Printf("Feed name: %s\n", createFeedFollowRow.FeedName)
+	fmt.Printf("User name: %s\n", createFeedFollowRow.UserName)
 
 	return nil
 }
