@@ -9,7 +9,7 @@ import (
 
 func HandlerUnfollow(s *state, cmd cmd, user database.User) error {
 	if len(cmd.args) != 1 {
-		return fmt.Errorf("Usage: go run . unfollow <feed name>")
+		return fmt.Errorf("Usage: go run . unfollow <feed url>")
 	}
 
 	feedToDelete, err := s.db.GetFeedByUrl(context.Background(), cmd.args[0])

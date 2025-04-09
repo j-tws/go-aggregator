@@ -33,7 +33,6 @@ func HandlerAddFeed(s *state, cmd cmd, user database.User) error {
 	}
 
 	fmt.Println("Successfully created feed:")
-	fmt.Println(feed)
 
 	createFeedFollowParams := database.CreateFeedFollowParams{
 		ID: uuid.New(),
@@ -50,6 +49,7 @@ func HandlerAddFeed(s *state, cmd cmd, user database.User) error {
 
 	fmt.Println("Successfully created feed follow!")
 	fmt.Printf("Feed name: %s\n", createFeedFollowRow.FeedName)
+	fmt.Printf("Feed URL: %s\n", feedUrl)
 	fmt.Printf("User name: %s\n", createFeedFollowRow.UserName)
 
 	return nil

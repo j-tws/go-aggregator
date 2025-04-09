@@ -35,6 +35,7 @@ func main(){
 		db: dbQueries,
 	}
 
+	//some commentblabla
 	commands := commands{
 		list: make(map[string]func(*state, cmd) error),
 	}
