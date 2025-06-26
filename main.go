@@ -39,6 +39,7 @@ func main(){
 		list: make(map[string]func(*state, cmd) error),
 	}
 
+	// random comment
 	commands.register("login", HandlerLogin)
 	commands.register("register", HandlerRegister)
 	commands.register("reset", HandlerReset)
