@@ -2,6 +2,8 @@
 
 A guided project by [boot.dev](https://www.boot.dev) to create a CLI RSS Aggregator application aka `gator`.
 
+Some extra text
+
 ## Pre-requisite
 
 You will need Go and Postgres installed in order to get the CLI working. Here are some links to get you started with Go and Postgres:
